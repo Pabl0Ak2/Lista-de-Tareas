@@ -1,0 +1,53 @@
+<div class="container mx-auto p-8 bg-gray-100 min-h-screen">
+  <div class="max-w-3xl mx-auto">
+    
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">
+      Lista de Tareas
+    </h1>
+
+    <div class="flex justify-center mb-6">
+      <button (click)="openModal()" 
+              class="px-6 py-3 bg-blue-500 text-white font-semibold rounded-full shadow-md hover:bg-blue-600 transition duration-300 ease-in-out">
+        ➕ Añadir Tarea
+      </button>
+    </div>
+
+    <div class="flex justify-center mb-8">
+      <label class="mr-3 font-semibold text-gray-700">Filtrar por etiqueta:</label>
+      <select [(ngModel)]="selectedTag" 
+              class="p-3 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+        <option value="Todos">Todos</option>
+        <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
+      </select>
+    </div>
+
+    <ul class="space-y-6">
+      <li *ngFor="let task of filterTasks()" 
+          class="bg-white p-6 shadow-lg rounded-lg transition transform hover:-translate-y-1 hover:shadow-xl">
+        <div class="flex justify-between items-center">
+
+          <div>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ task.title }}</h3>
+            <p class="text-gray-600 mb-1">{{ task.description }}</p>
+            <span class="text-sm px-3 py-1 bg-blue-100 text-blue-600 rounded-full">{{ task.tag }}</span>
+          </div>
+
+          <div class="flex space-x-3">
+            <button (click)="toggleComplete(task)"
+                    class="px-4 py-2 bg-green-500 text-white rounded-full shadow hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 transition ease-in-out duration-300">
+              {{ task.completed ? 'Desmarcar' : 'Completar' }}
+            </button>
+            <button (click)="deleteTask(task.id)"
+                    class="px-4 py-2 bg-red-500 text-white rounded-full shadow hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300 transition ease-in-out duration-300">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+    <app-task-form *ngIf="showModal" 
+                   (taskAdded)="onTaskAdded($event)"
+                   (closeModal)="closeModal()"></app-task-form>
+  </div>
+</div>
